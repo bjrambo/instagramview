@@ -24,9 +24,6 @@ namespace instagramView
 
         public async static void GetData()
         {
-            mWebBrowser.Visible = true;
-            mWebBrowser.Url = new Uri(WebUrl);
-
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(WebUrl);
 
