@@ -31,7 +31,28 @@ namespace instagramView
             httpClient.BaseAddress = new Uri(WebUrl);
 
             var response = await httpClient.GetAsync(UserName).ConfigureAwait(false);
-            var contentDetailsJSON = await response.Content.ReadAsStringAsync();
+            string contentDetailsString = await response.Content.ReadAsStringAsync();
+
+            object jsonData = GetMiddleString(contentDetailsString, "window._sharedData = ", ";</script>");
+
+        }
+
+
+        public static object GetMiddleString(string str, string begin, string end)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return null;
+            }
+
+            string result = null;
+            if (str.IndexOf(begin) > -1)
+            {
+                str = str.Substring(str.IndexOf(begin) + begin.Length);
+                if (str.IndexOf(end) > -1) result = str.Substring(0, str.IndexOf(end));
+                else result = str;
+            }
+            return JsonConvert.DeserializeObject(result);
         }
     }
 }
