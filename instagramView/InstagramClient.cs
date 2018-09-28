@@ -37,7 +37,9 @@ namespace instagramView
 
         }
 
-
+        /**
+         * Get to code: http://kimstar.kr/2452/
+         */
         public static object GetMiddleString(string str, string begin, string end)
         {
             if (string.IsNullOrEmpty(str))
@@ -49,8 +51,14 @@ namespace instagramView
             if (str.IndexOf(begin) > -1)
             {
                 str = str.Substring(str.IndexOf(begin) + begin.Length);
-                if (str.IndexOf(end) > -1) result = str.Substring(0, str.IndexOf(end));
-                else result = str;
+                if (str.IndexOf(end) > -1)
+                {
+                    result = str.Substring(0, str.IndexOf(end));
+                }
+                else
+                {
+                    result = str;
+                }
             }
             return JsonConvert.DeserializeObject(result);
         }
