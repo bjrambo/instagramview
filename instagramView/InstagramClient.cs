@@ -48,6 +48,9 @@ namespace instagramView
 
         }
 
+        /**
+         * code by : http://www.gisdeveloper.co.kr/?p=1711
+         */ 
         public static bool DownloadRemoteImageFile(string uri, string fileName)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
