@@ -12,20 +12,22 @@ namespace instagramView
     {
         private static WebBrowser mWebBrowser;
 
-        public const string UserName = "taeyeon_ss";
-        public const string WebUrl = "https://instagram.com/";
+        public static string UserId;
+        public const string WEB_URL = "https://instagram.com/";
 
         public InstagramClient(WebBrowser webBrowser)
         {
             mWebBrowser = webBrowser;
         }
 
-        public async static void GetData()
+        public async static void GetData(string InstaUserName)
         {
             var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(WebUrl);
+            httpClient.BaseAddress = new Uri(WEB_URL);
 
-            var response = await httpClient.GetAsync(UserName).ConfigureAwait(false);
+            UserId = InstaUserName;
+
+            var response = await httpClient.GetAsync(UserId).ConfigureAwait(false);
             string contentDetailsString = await response.Content.ReadAsStringAsync();
 
             string jsonData = GetMiddleString(contentDetailsString, "window._sharedData = ", ";</script>");
@@ -38,7 +40,7 @@ namespace instagramView
             {
                 if(DownloadRemoteImageFile(nodeData.node.display_url, $"C:/Users/qw541/Desktop/인스타그램테스트/{nodeData.node.shortcode}_{nodeData.node.id}.jpg") != true)
                 {
-                    break;
+                    continue;
                 }
             }
 
@@ -51,12 +53,8 @@ namespace instagramView
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            bool bImage = response.ContentType.StartsWith("image",
-                StringComparison.OrdinalIgnoreCase);
-            if ((response.StatusCode == HttpStatusCode.OK ||
-                response.StatusCode == HttpStatusCode.Moved ||
-                response.StatusCode == HttpStatusCode.Redirect) &&
-                bImage)
+            bool bImage = response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase);
+            if ((response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Moved || response.StatusCode == HttpStatusCode.Redirect) && bImage)
             {
                 using (Stream inputStream = response.GetResponseStream())
                 using (Stream outputStream = File.OpenWrite(fileName))
@@ -67,7 +65,8 @@ namespace instagramView
                     {
                         bytesRead = inputStream.Read(buffer, 0, buffer.Length);
                         outputStream.Write(buffer, 0, bytesRead);
-                    } while (bytesRead != 0);
+                    }
+                    while (bytesRead != 0);
                 }
 
                 return true;

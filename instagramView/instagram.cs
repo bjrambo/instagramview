@@ -6,6 +6,7 @@ namespace instagramView
     public partial class instagram : Form
     {
         private static InstagramClient mInstagramClient;
+        public static string INSERT_TEXT = null;
 
         public instagram()
         {
@@ -21,7 +22,12 @@ namespace instagramView
 
         private void button1_Click(object sender, EventArgs e)
         {
-            InstagramClient.GetData();
+            InstagramClient.GetData(INSERT_TEXT);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            INSERT_TEXT = textBox1.Text;
         }
     }
 }
