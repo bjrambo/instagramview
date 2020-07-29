@@ -30,8 +30,6 @@ namespace instagramView
             string FullUrl = String.Format(GET_INSTAGRAM_URL, TaeyeonInstaId);
             httpClient.BaseAddress = new Uri(FullUrl);
 
-            // It has not async. will be comaback to respon.
-            // TODO(BJRambo): checking using deadlock
             var response = await httpClient.GetAsync(UserId);
             string contentDetailsString = await response.Content.ReadAsStringAsync();
 
