@@ -22,7 +22,7 @@ namespace instagramView
 
         private void button1_Click(object sender, EventArgs e)
         {
-            InstagramClient.GetData(INSERT_TEXT);
+            InstagramClient.GetData();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

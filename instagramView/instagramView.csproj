@@ -70,11 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response\EdgeOwnerToTimelineMedia.cs" />
     <Compile Include="Response\Edges.cs" />
-    <Compile Include="Response\Graphql.cs" />
     <Compile Include="Response\InstaList.cs" />
-    <Compile Include="Response\EntryData.cs" />
+    <Compile Include="Response\Data.cs" />
     <Compile Include="Response\InstaNode.cs" />
-    <Compile Include="Response\ProfilePage.cs" />
     <Compile Include="Response\User.cs" />
     <EmbeddedResource Include="instagram.resx">
       <DependentUpon>instagram.cs</DependentUpon>

@@ -2,8 +2,8 @@
 
 namespace instagramView.Response
 {
-    public class EntryData
+    public class Data
     {
-        public List<ProfilePage> ProfilePage;
+        public User user;
     }
 }

@@ -13,28 +13,31 @@ namespace instagramView
         private static WebBrowser mWebBrowser;
 
         public static string UserId;
-        public const string WEB_URL = "https://instagram.com/";
+
+        public readonly static string GET_INSTAGRAM_URL = "https://www.instagram.com/graphql/query/?query_hash=f2405b236d85e8296cf30347c9f08c2a&variables=%7B%22id%22%3A%22{0}%22%2C%22first%22%3A12%7D";
 
         public InstagramClient(WebBrowser webBrowser)
         {
             mWebBrowser = webBrowser;
         }
 
-        public async static void GetData(string InstaUserName)
+        public async static void GetData()
         {
+            // Taeyeon instagram user id. It will be using to ulong type parameter.
+            string TaeyeonInstaId = "329452045";
             var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(WEB_URL);
 
-            UserId = InstaUserName;
+            string FullUrl = String.Format(GET_INSTAGRAM_URL, TaeyeonInstaId);
+            httpClient.BaseAddress = new Uri(FullUrl);
 
-            var response = await httpClient.GetAsync(UserId).ConfigureAwait(false);
+            // It has not async. will be comaback to respon.
+            // TODO(BJRambo): checking using deadlock
+            var response = await httpClient.GetAsync(UserId);
             string contentDetailsString = await response.Content.ReadAsStringAsync();
 
-            string jsonData = GetMiddleString(contentDetailsString, "window._sharedData = ", ";</script>");
+            var ObjectData = JsonConvert.DeserializeObject<Response.InstaList>(contentDetailsString);
 
-            var ObjectData = JsonConvert.DeserializeObject<Response.InstaList>(jsonData);
-
-            List<Response.Edges> EdgesDatas = ObjectData.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges;
+            List<Response.Edges> EdgesDatas = ObjectData.data.user.edge_owner_to_timeline_media.edges;
 
             foreach (var nodeData in EdgesDatas)
             {
@@ -43,7 +46,6 @@ namespace instagramView
                     continue;
                 }
             }
-
         }
 
         /**
